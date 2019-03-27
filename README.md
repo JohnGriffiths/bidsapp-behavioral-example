@@ -60,3 +60,7 @@ To run the group level:
    docker run -i --rm \
 		-v <local path to bids dataset>:/bids_dataset \
 		rt /bids_dataset group
+
+### Example
+
+For a working example, download [ds001715](https://openneuro.org/datasets/ds001715/versions/1.0.0) from OpenNeuro and then use that directory as the local BIDS dataset path.
