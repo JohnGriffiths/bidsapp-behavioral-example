@@ -24,16 +24,16 @@ This App has the following command line arguments:
 		positional arguments:
 		  bids_dir              The directory with the input dataset formatted
 		                        according to the BIDS standard.
-		  output_dir            The directory where the output files should be stored.
-		                        If you are running a group level analysis, this folder
-		                        should be prepopulated with the results of
-		                        the participant level analysis.
 		  {participant,group}   Level of the analysis that will be performed. Multiple
 		                        participant level analyses can be run independently
 		                        (in parallel).
 
 		optional arguments:
 		  -h, --help            show this help message and exit
+		  --output_dir          The directory where the output files should be stored.
+		                        If you are running a group level analysis, this folder
+		                        should be prepopulated with the results of
+		                        the participant level analysis.
 		  --participant_label PARTICIPANT_LABEL [PARTICIPANT_LABEL ...]
 		                        The label(s) of the participant(s) that should be
 		                        analyzed. The label corresponds to
@@ -47,7 +47,7 @@ This App has the following command line arguments:
 
 To build the dockerfile (creating an image called "rt"):
 
-	```make docker-build```
+	make docker-build
 
 To run it in participant level mode (for all participants):
 
@@ -57,7 +57,7 @@ To run it in participant level mode (for all participants):
 
 To run the group level:
 
-   docker run -i --rm \
+   	docker run -i --rm \
 		-v <local path to bids dataset>:/bids_dataset \
 		rt /bids_dataset group
 
