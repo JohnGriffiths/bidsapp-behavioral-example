@@ -2,7 +2,8 @@ docker-build:
 	docker build -t rt .
 
 run:
-	docker run -i --rm -v /Users/poldrack/data_unsynced/ds001715-download:/bids_dataset rt /bids_dataset 
+	docker run -i --rm -v /Users/poldrack/data_unsynced/ds001715-download:/bids_dataset rt /bids_dataset participant
+	docker run -i --rm -v /Users/poldrack/data_unsynced/ds001715-download:/bids_dataset rt /bids_dataset group
 
 
 shell:
