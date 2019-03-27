@@ -1,25 +1,16 @@
-## An example BIDS App (template repository)
-Every BIDS App needs to follow a minimal set of command arguments common across
-all of the Apps. This allows users and developers to easily use and integrate
-BIDS Apps with their environment.
+## An example BIDS App using pybids
 
-This is a minimalist example of a BIDS App consisting of a Dockerfile and a simple
-entry point script (written in this case in Python) accepting the standard BIDS
-Apps command line arguments. This repository can be used as a template for new BIDS Apps.
+This is a fork of the original BIDS Apps example, which was built prior to the existence of [pybids](https://github.com/bids-standard/pybids). At the participant level, the entry point script (run.py) will:
+
+- validates and loads a BIDS dataset using pybids
+- finds all of the event.tsv files
+- computes the mean of the specified response time column (default='RT')
+- saves the run means to derivatives/rt/sub-XX/func/sub-XX_task-XX_runMeanRT.tsv
+
+At the group level, it will load all of the participant run mean files, compute the overall mean for each subject, and save them to derivatives/rt/participants.tsv
 
 For more information about the specification of BIDS Apps see [here](https://docs.google.com/document/d/1E1Wi5ONvOVVnGhj21S1bmJJ4kyHFT7tkxnV3C23sjIE/edit#).
 
-### Description
-This is a placeholder for a short description explaining to the user what your App will doing.
-
-### Documentation
-Provide a link to the documention of your pipeline.
-
-### How to report errors
-Provide instructions for users on how to get help and report errors.
-
-### Acknowledgements
-Describe how would you would like users to acknowledge use of your App in their papers (citation, a paragraph that can be copy pasted, etc.)
 
 ### Usage
 This App has the following command line arguments:
@@ -50,27 +41,22 @@ This App has the following command line arguments:
 		                        not include "sub-"). If this parameter is not provided
 		                        all subjects will be analyzed. Multiple participants
 		                        can be specified with a space separated list.
+			--rt_var_name VARIABLE_NAME
+														name for response time variable in events file
+                    				default='RT'
 
-To run it in participant level mode (for one participant):
+To build the dockerfile (creating an image called "rt"):
 
-    docker run -i --rm \
-		-v /Users/filo/data/ds005:/bids_dataset:ro \
-		-v /Users/filo/outputs:/outputs \
-		bids/example \
-		/bids_dataset /outputs participant --participant_label 01
+	```make docker-build```
 
-After doing this for all subjects (potentially in parallel), the group level analysis
-can be run:
+To run it in participant level mode (for all participants):
 
     docker run -i --rm \
-		-v /Users/filo/data/ds005:/bids_dataset:ro \
-		-v /Users/filo/outputs:/outputs \
-		bids/example \
-		/bids_dataset /outputs group
+		-v <local path to bids dataset>:/bids_dataset \
+		rt /bids_dataset participant
 
-### Special considerations
-Describe whether your app has any special requirements. For example:
+To run the group level:
 
-- Multiple map reduce steps (participant, group, participant2, group2 etc.)
-- Unusual memory requirements
-- etc.
+   docker run -i --rm \
+		-v <local path to bids dataset>:/bids_dataset \
+		rt /bids_dataset group
